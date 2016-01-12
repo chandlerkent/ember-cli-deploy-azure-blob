@@ -19,7 +19,8 @@ module.exports = {
       defaultConfig: {
         containerName: 'emberdeploy',
         gzipExtensions: ['js', 'css', 'svg'],
-        gzip: false
+        gzip: false,
+        cacheControl: ''
       },
 
       _createClient: function() {
@@ -120,6 +121,11 @@ module.exports = {
 
         if(gzipEnabled && hasBeenGziped) {
           options["contentEncoding"] = "gzip";
+        }
+        
+        var cacheControl = this.readConfig("cacheControl");
+        if (cacheControl) {
+          options["cacheControl"] = cacheControl;
         }
 
         client.doesBlobExist(containerName, targetFile, function(error, blobExists, response) {
